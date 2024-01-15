@@ -1,0 +1,16 @@
+<h1>{{ title }}</h1>
+<ul>
+  <li *ngFor="let movie of movies(); index as i">{{ i + 1 }} - {{ movie }}</li>
+</ul>
+<p>Total: {{ movies().length }}</p>
+<input type="text" [value]="name" />
+<button disabled="isDisabled" (click)="(showAlert)">Click Me</button>
+<img [src]="image" alt="cat image" />
+<button (click)="showAlert()">Click Me</button>
+<h1>Evento On change</h1>
+<input type="text" [value]="name" (change)="onChange($event)" />
+<input type="text" [value]="name" (keydown)="keydownHandler($event)" />
+<input type="text" [value]="name" (keydown.shift.t)="onChange($event)" />
+
+<h1>Signals</h1>
+<p>Esta es una función reactiva signal : {{ catName() }}</p>
