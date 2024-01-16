@@ -1,37 +1,57 @@
-import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import {
+  Component,
+  Inject,
+  Injector,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { Task } from '../../models/task.models.js';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  tasks = signal<Task[]>([
-    {
-      id: Date.now(),
-      title: 'Estudiar Angular',
-      completed: false,
-    },
-    {
-      id: Date.now(),
-      title: 'Ver clase de Signal',
-      completed: false,
-    },
-    {
-      id: Date.now(),
-      title: 'Terminar proyecto TODO list',
-      completed: true,
-    },
-  ]);
+  tasks = signal<Task[]>([]);
 
   newTaskControl = new FormControl('', {
     nonNullable: true,
     validators: [Validators.required, Validators.minLength(3)],
   });
+
+  filter = signal<'all' | 'pending' | 'completed'>('all');
+  tasksFiltered = computed(() => {
+    const filter = this.filter();
+    const tasks = this.tasks();
+    if (filter === 'pending') {
+      return tasks.filter((task) => !task.completed);
+    }
+    if (filter === 'completed') {
+      return tasks.filter((task) => task.completed);
+    }
+    return tasks;
+  });
+  injector = inject(Injector);
+
+  constructor() {
+    effect(() => {
+      const tasks = this.tasks();
+      console.log('listen tasks', tasks);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    });
+  }
+
+  ngOnInit() {
+    const tasks = localStorage.getItem('tasks');
+    if (tasks) {
+      this.tasks.set(JSON.parse(tasks));
+    }
+  }
 
   changeHandler(event: Event) {
     // cuando usamos el evento change, el input ya tiene el valor
@@ -71,9 +91,47 @@ export class HomeComponent {
     });
   }
 
-  deleteTask(index: Number) {
+  deleteTask(index: number) {
     this.tasks.update((tasks) =>
       tasks.filter((task, position) => position != index)
     );
+  }
+
+  openEdit(index: number) {
+    this.tasks.update((tasks) => {
+      return tasks.map((task, position) => {
+        if (position === index) {
+          return {
+            ...task,
+            editing: true,
+          };
+        }
+        return {
+          ...task,
+          editing: false,
+        };
+      });
+    });
+  }
+
+  updateTaskTitle(index: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const title = input.value.trim();
+    this.tasks.update((tasks) => {
+      return tasks.map((task, position) => {
+        if (position === index) {
+          return {
+            ...task,
+            title,
+            editing: false,
+          };
+        }
+        return task;
+      });
+    });
+  }
+
+  changeFilter(filter: 'all' | 'pending' | 'completed') {
+    this.filter.set(filter);
   }
 }

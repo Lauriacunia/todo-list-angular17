@@ -7,9 +7,11 @@
     <h3>Renderizar una lista dinámica</h3>
     <h1>{{ title }}</h1>
     <ul>
-      <li *ngFor="let movie of movies(); index as i">
-        {{ i + 1 }} - {{ movie }}
-      </li>
+      @for (movie of movies(); track movie; let i = $index) {
+        <li>
+          {{ i + 1 }} - {{ movie }}
+        </li>
+      }
     </ul>
     <p>Total: {{ movies().length }}</p>
   </div>
@@ -29,14 +31,14 @@
         type="text"
         [value]="name()"
         (keydown)="setName($event)"
-      />
+        />
       <label for="name">Nombre del gato - Change</label>
       <input
         class="input-text"
         type="text"
         [value]="catName()"
         (change)="setCatName($event)"
-      />
+        />
       <!-- <input type="text" [value]="name()" (keydown.shift.t)="setCatName($event)" /> -->
     </div>
     <div>
@@ -56,20 +58,31 @@
   <br />
   <div>
     <h3>ngSwitch ejemplo</h3>
-    <div [ngSwitch]="name()">
-      <p *ngSwitchCase="'Lau'">Soy Lau</p>
-      <p *ngSwitchCase="'Pablo'">Soy Pablo</p>
-      <p *ngSwitchDefault>No soy Lau ni Pablo</p>
+    <div>
+      @switch (name()) {
+        @case ('Lau') {
+          <p>Soy Lau</p>
+        }
+        @case ('Pablo') {
+          <p>Soy Pablo</p>
+        }
+        @default {
+          <p>No soy Lau ni Pablo</p>
+        }
+      }
     </div>
   </div>
 
   <br />
   <div>
     <h3>ngIf ejemplo</h3>
-    <p *ngIf="name() === 'Lau'; else noLauBlock">
-      Conditional rendering- Soy Lau
-    </p>
-    <ng-template #noLauBlock> No es Lau !! </ng-template>
+    @if (name() === 'Lau') {
+      <p>
+        Conditional rendering- Soy Lau
+      </p>
+    } @else {
+      No es Lau !!
+    }
   </div>
 
   <br />
@@ -90,6 +103,6 @@
       class="message-error"
       [class.show]="nameCtl.invalid && nameCtl.touched"
       >Nombre inválido</span
-    >
+      >
+    </div>
   </div>
-</div>
