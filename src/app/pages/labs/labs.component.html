@@ -1,16 +1,95 @@
-<h1>{{ title }}</h1>
-<ul>
-  <li *ngFor="let movie of movies(); index as i">{{ i + 1 }} - {{ movie }}</li>
-</ul>
-<p>Total: {{ movies().length }}</p>
-<input type="text" [value]="name" />
-<button disabled="isDisabled" (click)="(showAlert)">Click Me</button>
-<img [src]="image" alt="cat image" />
-<button (click)="showAlert()">Click Me</button>
-<h1>Evento On change</h1>
-<input type="text" [value]="name" (change)="onChange($event)" />
-<input type="text" [value]="name" (keydown)="keydownHandler($event)" />
-<input type="text" [value]="name" (keydown.shift.t)="onChange($event)" />
+<div class="container">
+  <div>
+    <h1>Labs</h1>
+    <p>Esta es una página de laboratorio</p>
+  </div>
+  <div>
+    <h3>Renderizar una lista dinámica</h3>
+    <h1>{{ title }}</h1>
+    <ul>
+      <li *ngFor="let movie of movies(); index as i">
+        {{ i + 1 }} - {{ movie }}
+      </li>
+    </ul>
+    <p>Total: {{ movies().length }}</p>
+  </div>
 
-<h1>Signals</h1>
-<p>Esta es una función reactiva signal : {{ catName() }}</p>
+  <div>
+    <h3>Eventos - click</h3>
+    <button class="button" [disabled]="isDisabled" (click)="showAlert()">
+      Click Me
+    </button>
+  </div>
+  <div class="form-container">
+    <div class="input-container">
+      <h3>Eventos - change & keydown</h3>
+      <label for="name">Mi nombre - Keydown</label>
+      <input
+        class="input-text"
+        type="text"
+        [value]="name()"
+        (keydown)="setName($event)"
+      />
+      <label for="name">Nombre del gato - Change</label>
+      <input
+        class="input-text"
+        type="text"
+        [value]="catName()"
+        (change)="setCatName($event)"
+      />
+      <!-- <input type="text" [value]="name()" (keydown.shift.t)="setCatName($event)" /> -->
+    </div>
+    <div>
+      <h1>Signals</h1>
+      <p>Esta es una función reactiva signal</p>
+      <p>
+        Mi nombre es: <b>{{ name() }}</b> y mi gato se llama
+        <b>{{ catName() }}</b>
+      </p>
+      <div class="cat-container">
+        <h3>Render de imágenes dinámicas</h3>
+        <img [src]="image" alt="cat image" />
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <div>
+    <h3>ngSwitch ejemplo</h3>
+    <div [ngSwitch]="name()">
+      <p *ngSwitchCase="'Lau'">Soy Lau</p>
+      <p *ngSwitchCase="'Pablo'">Soy Pablo</p>
+      <p *ngSwitchDefault>No soy Lau ni Pablo</p>
+    </div>
+  </div>
+
+  <br />
+  <div>
+    <h3>ngIf ejemplo</h3>
+    <p *ngIf="name() === 'Lau'; else noLauBlock">
+      Conditional rendering- Soy Lau
+    </p>
+    <ng-template #noLauBlock> No es Lau !! </ng-template>
+  </div>
+
+  <br />
+
+  <div>
+    <h3>Form Control</h3>
+    <input type="color" [formControl]="colorCtl" />
+    <p>Color: {{ colorCtl.value }}</p>
+    <svg width="100" height="100">
+      <circle [attr.fill]="colorCtl.value" cx="50" cy="50" r="40" />
+    </svg>
+    <br />
+    <input type="number" [formControl]="widthCtl" />
+    <span class="box" [style.width.px]="widthCtl.value">Hola</span>
+    <br />
+    <input type="text" [formControl]="nameCtl" />
+    <span
+      class="message-error"
+      [class.show]="nameCtl.invalid && nameCtl.touched"
+      >Nombre inválido</span
+    >
+  </div>
+</div>

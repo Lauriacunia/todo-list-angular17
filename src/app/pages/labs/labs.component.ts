@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-labs',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './labs.component.html',
   styleUrl: './labs.component.css',
 })
@@ -15,25 +16,35 @@ export class LabsComponent {
     'La desolación de Smaug',
     'La batalla de los Cinco Ejércitos',
   ]);
-  name = 'Lau';
+  name = signal('Lau');
   isDisabled = false;
   image = 'https://cataas.com/cat';
 
   catName = signal('Pipi');
 
+  colorCtl = new FormControl();
+  widthCtl = new FormControl(100);
+  nameCtl = new FormControl('Lau', {
+    validators: [Validators.required, Validators.minLength(3)],
+  });
+
+  constructor() {
+    this.colorCtl.valueChanges.subscribe((value) => {
+      console.log(value);
+    });
+  }
+
   showAlert() {
-    alert('Hola!');
+    alert('Hola Angular 17!');
   }
 
-  onChange(event: Event) {
+  setCatName(event: Event) {
     const input = event.target as HTMLInputElement;
-    console.log(input.value);
-    this.catName.set('Kira');
-    //console.log(event);
+    this.catName.set(input.value);
   }
 
-  keydownHandler(event: KeyboardEvent) {
+  setName(event: KeyboardEvent) {
     const input = event.target as HTMLInputElement;
-    console.log(input.value);
+    this.name.set(input.value);
   }
 }
