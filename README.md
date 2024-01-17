@@ -14,7 +14,7 @@ Dive into the project to explore the latest features of Angular 17, including a 
 
 ## Deploy
 
-[Deployment Link](deployment_URL)
+[Deployment Link](https://mydayapp-ddea0.web.app/)
 
 ## Contact
 
