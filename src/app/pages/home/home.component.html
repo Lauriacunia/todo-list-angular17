@@ -1,7 +1,7 @@
 <section class="todoapp">
   <header class="header">
     <div class="container">
-      <h1>My Day</h1>
+      <h1>TaskHub</h1>
       <p>All my tasks in one place</p>
       <input
         class="new-todo"
@@ -44,36 +44,39 @@
 
     @if (tasksFiltered().length > 0) {
     <footer class="footer">
-      <!-- This should be `0 items left` by default -->
-      <span class="todo-count">
-        <strong>{{ tasksFiltered().length }}</strong>
-        @if (tasksFiltered().length === 1) {
-        <span> item</span>
-        } @else { items }
-      </span>
-      <ul class="filters">
-        <li>
-          <a [class.selected]="filter() === 'all'" (click)="changeFilter('all')"
-            >All</a
-          >
-        </li>
-        <li>
-          <a
-            [class.selected]="filter() === 'pending'"
-            (click)="changeFilter('pending')"
-            >Pending</a
-          >
-        </li>
-        <li>
-          <a
-            [class.selected]="filter() === 'completed'"
-            (click)="changeFilter('completed')"
-            >Completed</a
-          >
-        </li>
-      </ul>
-      <!-- Hidden if no completed items are left ↓ -->
-      <button class="clear-completed">Clear completed</button>
+      <div class="qty-items-container">
+        <span class="todo-count">
+          <strong>{{ tasksFiltered().length }}</strong>
+          @if (tasksFiltered().length === 1) {
+          <span> ítem</span>
+          } @else { ítems }
+        </span>
+      </div>
+      <div class="list-container">
+        <ul class="filters">
+          <li>
+            <a
+              [class.selected]="filter() === 'all'"
+              (click)="changeFilter('all')"
+              >All</a
+            >
+          </li>
+          <li>
+            <a
+              [class.selected]="filter() === 'pending'"
+              (click)="changeFilter('pending')"
+              >Pending</a
+            >
+          </li>
+          <li>
+            <a
+              [class.selected]="filter() === 'completed'"
+              (click)="changeFilter('completed')"
+              >Completed</a
+            >
+          </li>
+        </ul>
+      </div>
     </footer>
     }
   </div>
