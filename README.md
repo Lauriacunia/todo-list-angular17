@@ -22,7 +22,7 @@ Dive into the project to explore the latest features of Angular 17, including a 
 
 Laura Acuña
 
-- [![LinkedIn](link/to/your/linkedin/icon.png)](https://linkedin.com/in/Lauriacunia)
+- [LinkedIn](https://linkedin.com/in/Lauriacunia)
 
 ## Development server
 
